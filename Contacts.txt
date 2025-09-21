@@ -1,0 +1,39 @@
+FILE = "contacts.txt"
+
+def add_contact(name, phone, email):
+    with open(FILE, "a") as f:
+        f.write(f"{name},{phone},{email}\n")
+    print("✅ Contact added successfully!")
+
+def view_contacts():
+    try:
+        with open(FILE, "r") as f:
+            contacts = f.readlines()
+            if not contacts:
+                print("No contacts found.")
+            else:
+                print("\n--- Contacts ---")
+                for line in contacts:
+                    name, phone, email = line.strip().split(",")
+                    print(f"Name: {name}, Phone: {phone}, Email: {email}")
+    except FileNotFoundError:
+        print("No contacts file found yet.")
+
+def search_contact(name):
+    try:
+        with open(FILE, "r") as f:
+            for line in f:
+                contact_name, phone, email = line.strip().split(",")
+                if contact_name.lower() == name.lower():
+                    print(f"Found: {contact_name}, {phone}, {email}")
+                    return
+            print("Contact not found.")
+    except FileNotFoundError:
+        print("No contacts file found yet.")
+
+# --- Demo ---
+if __name__ == "__main__":
+    add_contact("John Doe", "123456789", "john@example.com")
+    add_contact("Jane Smith", "987654321", "jane@example.com")
+    view_contacts()
+    search_contact("John Doe")
